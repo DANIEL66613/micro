@@ -1,11 +1,17 @@
-from flask import blueprint
+from flask import Blueprint, request, jsonify
 
-@meuApp.route('/professores', methods=['GET'])
+# Criação do blueprint sempre com inicial maiúscula 
+professores_blueprint = Blueprint('professores', __name__)
+
+# Lista para armazenar professores
+professores = []
+
+@professores_blueprint.route('/professores', methods=['GET'])
 def get_professores():
     return jsonify({'professores': professores})
 
 
-@meuApp.route('/professores', methods=['POST'])
+@professores_blueprint.route('/professores', methods=['POST'])
 def create_professor():
     data = request.json
     novo_professor = {
@@ -19,7 +25,7 @@ def create_professor():
     return jsonify(novo_professor), 201
 
 
-@meuApp.route('/professores/<int:professor_id>', methods=['PUT'])
+@professores_blueprint.route('/professores/<int:professor_id>', methods=['PUT'])
 def update_professor(professor_id):
     for professor in professores:
         if professor['id'] == professor_id:
@@ -32,7 +38,7 @@ def update_professor(professor_id):
     return jsonify({'mensagem': 'Professor não encontrado'}), 404
 
 
-@meuApp.route('/professores/<int:professor_id>', methods=['DELETE'])
+@professores_blueprint.route('/professores/<int:professor_id>', methods=['DELETE'])
 def delete_professor(professor_id):
     for professor in professores:
         if professor['id'] == professor_id:
