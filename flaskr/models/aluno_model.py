@@ -3,6 +3,12 @@ from config import db
 class Aluno(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100))
+    idade = db.Column(db.Integer)
+    turma = db.Column(db.String(50))
+    nascimento = db.Column(db.Date)
+    nota_primeiro_semestre = db.Column(db.decìmal)
+    nota_segundo_semestre = db.Column(db.decìmal)
+    nota_final = db.Column(db.decìmal)
 
     def __init__(self, nome):
         self.nome = nome
