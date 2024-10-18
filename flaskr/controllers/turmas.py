@@ -1,79 +1,46 @@
-@meuApp.route('/professores', methods=['GET'])
-def get_professores():
-    return jsonify({'professores': professores})
+from flask import Blueprint, request, jsonify
 
+# Criação do blueprint para turmas
+turmas_blueprint = Blueprint('turmas', __name__)
 
-@meuApp.route('/professores', methods=['POST'])
-def create_professor():
-    data = request.json
-    novo_professor = {
-        'id': len(professores) + 1,
-        'nome': data['nome'],
-        'idade': data['idade'],
-        'materia': data['materia'],
-        'observacoes': data['observacoes']
-    }
-    professores.append(novo_professor)
-    return jsonify(novo_professor), 201
+# Lista temporária para armazenar as turmas
+turmas = []
 
-
-@meuApp.route('/professores/<int:professor_id>', methods=['PUT'])
-def update_professor(professor_id):
-    for professor in professores:
-        if professor['id'] == professor_id:
-            data = request.json
-            professor['nome'] = data.get('nome', professor['nome'])
-            professor['idade'] = data.get('idade', professor['idade'])
-            professor['materia'] = data.get('materia', professor['materia'])
-            professor['observacoes'] = data.get('observacoes', professor['observacoes'])
-            return jsonify(professor)
-    return jsonify({'mensagem': 'Professor não encontrado'}), 404
-
-
-@meuApp.route('/professores/<int:professor_id>', methods=['DELETE'])
-def delete_professor(professor_id):
-    for professor in professores:
-        if professor['id'] == professor_id:
-            professores.remove(professor)
-            return jsonify({'mensagem': 'Professor removido'})
-    return jsonify({'mensagem': 'Professor não encontrado'}), 404
-
-# ---------------- ROTAS PARA TURMAS ----------------
-
-@meuApp.route('/turmas', methods=['GET'])
+@turmas_blueprint.route('/turmas', methods=['GET'])
 def get_turmas():
-    return jsonify({'turmas': turma})
+    return jsonify({'turmas': turmas})
 
-
-@meuApp.route('/turmas', methods=['POST'])
+@turmas_blueprint.route('/turmas', methods=['POST'])
 def create_turma():
     data = request.json
+    # Validação básica dos dados, a linha a seguir verifica se a variável data não esta vazia e se cada item dentro das aspas tbm estão contidos nela
+    if not data or 'descricao' not in data or 'professor' not in data or 'ativo' not in data:
+        return jsonify({'erro': 'Dados inválidos ou incompletos'}), 400
+
     nova_turma = {
-        'id': len(turma) + 1,
+        'id': len(turmas) + 1,
         'descricao': data['descricao'],
         'professor': data['professor'],
-        'ativo': data['ativo']
+        'ativo': data['ativo']  # Assumindo que é um campo booleano ou equivalente
     }
-    turma.append(nova_turma)
+    turmas.append(nova_turma)
     return jsonify(nova_turma), 201
 
-
-@meuApp.route('/turmas/<int:turma_id>', methods=['PUT'])
+@turmas_blueprint.route('/turmas/<int:turma_id>', methods=['PUT'])
 def update_turma(turma_id):
-    for t in turma:
-        if t['id'] == turma_id:
+    for turma in turmas:
+        if turma['id'] == turma_id:
             data = request.json
-            t['descricao'] = data.get('descricao', t['descricao'])
-            t['professor'] = data.get('professor', t['professor'])
-            t['ativo'] = data.get('ativo', t['ativo'])
-            return jsonify(t)
+            turma['descricao'] = data.get('descricao', turma['descricao'])
+            turma['professor'] = data.get('professor', turma['professor'])
+            turma['ativo'] = data.get('ativo', turma['ativo'])
+            return jsonify(turma)
     return jsonify({'mensagem': 'Turma não encontrada'}), 404
 
-
-@meuApp.route('/turmas/<int:turma_id>', methods=['DELETE'])
+@turmas_blueprint.route('/turmas/<int:turma_id>', methods=['DELETE'])
 def delete_turma(turma_id):
-    for t in turma:
-        if t['id'] == turma_id:
-            turma.remove(t)
+    for turma in turmas:
+        if turma['id'] == turma_id:
+            turmas.remove(turma)
             return jsonify({'mensagem': 'Turma removida'})
     return jsonify({'mensagem': 'Turma não encontrada'}), 404
