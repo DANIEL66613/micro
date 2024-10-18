@@ -1,12 +1,14 @@
-import flask
-from flask import blueprint
+from flask import Blueprint, request, jsonify
 
-alunos_blueprint = blueprint('aluno', methods=['GET'])
+# Criação do blueprint corretamente com letra maiúscula
+alunos_blueprint = Blueprint('alunos', __name__)
+
+# Lista para armazenar alunos
+alunos = []
 
 @alunos_blueprint.route('/alunos', methods=['GET'])
-def alunos():
-    return jsonify(get_alunos())
-
+def get_alunos():
+    return jsonify({'alunos': alunos})
 
 @alunos_blueprint.route('/alunos', methods=['POST'])
 def create_aluno():
