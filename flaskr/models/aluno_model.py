@@ -31,6 +31,7 @@ def listar_alunos():
 
 def adicionar_aluno(aluno_data):
     novo_aluno = Aluno(nome=aluno_data['nome'])
+    #xriar validacao
     db.session.add(novo_aluno)
     db.session.commit()
 
