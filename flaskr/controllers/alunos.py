@@ -1,20 +1,30 @@
-from flask import Blueprint, request, jsonify
-from ..models.aluno import listar_alunos, adicionar_aluno, atualizar_aluno, excluir_aluno, AlunoNaoEncontrado
+from flask import Blueprint, request, jsonify, render_template
+from ..models.aluno import listar_alunos, adicionar_aluno, atualizar_aluno, excluir_aluno, AlunoNaoEncontrado, aluno_por_id
 
 alunos_blueprint = Blueprint('alunos', __name__)
 
 @alunos_blueprint.route('/alunos', methods=['GET'])
 def get_alunos():
-    return jsonify(listar_alunos()), 200
+    alunos = listar_alunos()
+    return render_template("alunos/listar_alunos.html", alunos=alunos)
+
+@alunos_blueprint.route('/alunos/<int:id_aluno>', methods=['GET'])
+def get_aluno(id_aluno):
+    try:
+        aluno = aluno_por_id(id_aluno)
+        return jsonify(aluno), 200
+    except AlunoNaoEncontrado:
+        return jsonify({'message': 'Aluno não encontrado'}), 404
 
 @alunos_blueprint.route('/alunos', methods=['POST'])
 def create_aluno():
     data = request.json
     try:
-        adicionar_aluno(data)
-        return jsonify({'message': 'Aluno criado com sucesso!'}), 201
+        aluno_id = adicionar_aluno(data)
+        return jsonify({'message': 'Aluno criado com sucesso!', 'id': aluno_id}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+
 
 @alunos_blueprint.route('/alunos/<int:aluno_id>', methods=['PUT'])
 def update_aluno(aluno_id):

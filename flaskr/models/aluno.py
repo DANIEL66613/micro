@@ -1,6 +1,7 @@
 from ..config import db
 from datetime import datetime
 
+
 class Aluno(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100))
@@ -37,8 +38,8 @@ class AlunoNaoEncontrado(Exception):
 
 def aluno_por_id(id_aluno):
     aluno = Aluno.query.get(id_aluno)
-    if not aluno:
-        raise AlunoNaoEncontrado
+    if aluno is None:
+        raise AlunoNaoEncontrado(f'Aluno com ID {id_aluno} não encontrado.')
     return aluno.to_dict()
 
 def listar_alunos():
@@ -46,18 +47,19 @@ def listar_alunos():
     return [aluno.to_dict() for aluno in alunos]
 
 def adicionar_aluno(aluno_data):
-    nascimento = datetime.strptime(aluno_data['nascimento'], '%Y-%m-%d').date()
     novo_aluno = Aluno(
         nome=aluno_data['nome'],
         idade=aluno_data['idade'],
         turma=aluno_data['turma'],
-        nascimento=nascimento,
+        nascimento=datetime.strptime(aluno_data['nascimento'], '%Y-%m-%d').date(),
         nota_primeiro_semestre=aluno_data['nota_primeiro_semestre'],
         nota_segundo_semestre=aluno_data['nota_segundo_semestre'],
         nota_final=aluno_data['nota_final']
     )
     db.session.add(novo_aluno)
     db.session.commit()
+    db.session.commit()
+    return novo_aluno.id
 
 def atualizar_aluno(id_aluno, novos_dados):
     aluno = Aluno.query.get(id_aluno)
@@ -66,7 +68,7 @@ def atualizar_aluno(id_aluno, novos_dados):
     aluno.nome = novos_dados['nome']
     aluno.idade = novos_dados['idade']
     aluno.turma = novos_dados['turma']
-    aluno.nascimento = novos_dados['nascimento']
+    aluno.nascimento = datetime.strptime(novos_dados['nascimento'], '%Y-%m-%d').date()
     aluno.nota_primeiro_semestre = novos_dados['nota_primeiro_semestre']
     aluno.nota_segundo_semestre = novos_dados['nota_segundo_semestre']
     aluno.nota_final = novos_dados['nota_final']

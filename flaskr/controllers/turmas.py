@@ -1,5 +1,5 @@
-from flask import Blueprint, request, jsonify
-from ..models.turma import Turma, adicionar_turma, listar_turmas, atualizar_turma, excluir_turma, TurmaNaoEncontrada
+from flask import Blueprint, request, jsonify, render_template
+from ..models.turma import Turma, adicionar_turma, listar_turmas, atualizar_turma, excluir_turma, TurmaNaoEncontrada, turma_por_id
 
 turmas_blueprint = Blueprint('turmas', __name__)
 
@@ -7,10 +7,18 @@ turmas_blueprint = Blueprint('turmas', __name__)
 def get_turmas():
     try:
         turmas = listar_turmas()
-        return jsonify(turmas), 200
+        return render_template('turma/listar_turmas.html', turmas=turmas)
     except Exception as e:
         return jsonify({'erro': str(e)}), 500
 
+@turmas_blueprint.route('/turmas/<int:id_turma>', methods=['GET'])
+def get_turma(id_turma):
+    try:
+        turma = turma_por_id(id_turma)  # Função para buscar turma pelo ID
+        return jsonify(turma), 200
+    except TurmaNaoEncontrada:
+        return jsonify({'message': 'Turma não encontrada'}), 404
+    
 @turmas_blueprint.route('/turmas', methods=['POST'])
 def create_turma():
     data = request.json
@@ -18,8 +26,8 @@ def create_turma():
         return jsonify({'erro': 'Dados inválidos ou incompletos'}), 400
 
     try:
-        adicionar_turma(data)
-        return jsonify({'mensagem': 'Turma criada com sucesso!'}), 201
+        id_turma = adicionar_turma(data)
+        return jsonify({'mensagem': 'Turma criada com sucesso!','id': id_turma}), 201
     except Exception as e:
         return jsonify({'erro': str(e)}), 500
 

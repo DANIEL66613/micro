@@ -6,7 +6,7 @@ import os
 # Insere o caminho do diretório do app no sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'flaskr')))
 
-from flaskr import create_app  # Importa sua função de criação de app
+from flaskr import create_app
 
 @pytest.fixture
 def app():

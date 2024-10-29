@@ -44,6 +44,7 @@ def adicionar_professor(professor_data):
     )
     db.session.add(novo_professor)
     db.session.commit()
+    return novo_professor.id
 
 def atualizar_professor(id_professor, novos_dados):
     professor = Professores.query.get(id_professor)
