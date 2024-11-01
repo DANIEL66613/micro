@@ -1,0 +1,13 @@
+curl http://localhost:5000/alunos -H "Accept: application/json"
+curl -X POST http://localhost:5000/alunos -H "Content-Type: application/json" -d '{"nome": "Teste Aluno", "idade": 21, "turma": "3B", "nascimento": "2003-04-15", "nota_primeiro_semestre": 7.5, "nota_segundo_semestre": 8.0, "nota_final": 7.75}'
+curl -X PUT http://localhost:5000/alunos/1 -H "Content-Type: application/json" -d '{"nome": "Teste Aluno", "idade": 21, "turma": "3B", "nascimento": "2003-04-15", "nota_primeiro_semestre": 7.5, "nota_segundo_semestre": 8.0, "nota_final": 7.75}'
+curl -X DELETE http://localhost:5000/alunos/1
+
+curl http://localhost:5000/turmas -H "Accept: application/json"
+curl -X POST http://localhost:5000/turmas -H "Content-Type: application/json" -d '{"descricao": "Turma de Teste", "professor": "Professor Teste", "ativo": true}'
+curl -X PUT http://localhost:5000/turmas/1 -H "Content-Type: application/json" -d '{"descricao": "Turma de Teste", "professor": "Professor Teste", "ativo": true}'
+curl -X DELETE http://localhost:5000/turmas/1
+
+curl http://localhost:5000/professores -H "Accept: application/json"
+curl -X POST http://localhost:5000/professores -H "Content-Type: application/json" -d '{"nome": "Teste Professor", "idade": 40, "materia": "Matematica", "observacoes": "Nenhuma"}'
+curl -X PUT http://localhost:5000/professores/1 -H "Content-Type: application/json" -d '{"nome": "Teste Professor", "idade": 40, "materia": "Matematica", "observacoes": "Nenhuma"}'
