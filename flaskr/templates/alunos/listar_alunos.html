@@ -17,11 +17,13 @@
             <p>Corpo da requisição (JSON):</p>
             <pre>
 {
-    "nome": "Nome do Aluno",
-    "turma": "Turma",
-    "idade": 20,
-    "email": "email@example.com",
-    "telefone": "123456789"
+    "nome": "Teste Aluno",
+    "idade": 21,
+    "turma": "3B",
+    "nascimento": "2003-04-15",
+    "nota_primeiro_semestre": 7.5,
+    "nota_segundo_semestre": 8.0,
+    "nota_final": 7.75
 }
             </pre>
         </div>
@@ -33,11 +35,13 @@
             <p>Corpo da requisição (JSON):</p>
             <pre>
 {
-    "nome": "Novo Nome",
-    "turma": "Nova Turma",
-    "idade": 20,
-    "email": "novoemail@example.com",
-    "telefone": "123456789"
+    "nome": "Teste Aluno",
+    "idade": 21,
+    "turma": "3B",
+    "nascimento": "2003-04-15",
+    "nota_primeiro_semestre": 7.5,
+    "nota_segundo_semestre": 8.0,
+    "nota_final": 7.75
 }
             </pre>
         </div>
@@ -58,8 +62,10 @@
                 <th>Aluno</th>
                 <th>Turma</th>
                 <th>Idade</th>
-                <th>Email</th>
-                <th>Telefone</th>
+                <th>Nascimento</th>
+                <th>Nota 1</th>
+                <th>Nota 2</th>
+                <th>Nota 3</th>
             </tr>
         </thead>
         <tbody>
@@ -69,8 +75,10 @@
                 <td>{{ aluno.nome }}</td>
                 <td>{{ aluno.turma }}</td>
                 <td>{{ aluno.idade }}</td>
-                <td>{{ aluno.email }}</td>
-                <td>{{ aluno.telefone }}</td>
+                <td>{{ aluno.nascimento }}</td>
+                <td>{{ aluno.nota_primeiro_semestre }}</td>
+                <td>{{ aluno.nota_segundo_semestre}}</td>
+                <td>{{ aluno.nota_final }}</td>
             </tr>
             {% else %}
             <tr>

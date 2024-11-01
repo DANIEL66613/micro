@@ -5,11 +5,11 @@ turmas_blueprint = Blueprint('turmas', __name__)
 
 @turmas_blueprint.route('/turmas', methods=['GET'])
 def get_turmas():
-    try:
-        turmas = listar_turmas()
+    turmas = listar_turmas()
+    if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html: 
+        return jsonify(turmas)
+    else: 
         return render_template('turma/listar_turmas.html', turmas=turmas)
-    except Exception as e:
-        return jsonify({'erro': str(e)}), 500
 
 @turmas_blueprint.route('/turmas/<int:id_turma>', methods=['GET'])
 def get_turma(id_turma):

@@ -6,7 +6,10 @@ alunos_blueprint = Blueprint('alunos', __name__)
 @alunos_blueprint.route('/alunos', methods=['GET'])
 def get_alunos():
     alunos = listar_alunos()
-    return render_template("alunos/listar_alunos.html", alunos=alunos)
+    if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html: 
+        return jsonify(alunos)
+    else: 
+        return render_template("alunos/listar_alunos.html", alunos=alunos)
 
 @alunos_blueprint.route('/alunos/<int:id_aluno>', methods=['GET'])
 def get_aluno(id_aluno):
@@ -14,7 +17,7 @@ def get_aluno(id_aluno):
         aluno = aluno_por_id(id_aluno)
         return jsonify(aluno), 200
     except AlunoNaoEncontrado:
-        return jsonify({'message': 'Aluno não encontrado'}), 404
+        return jsonify({'message': 'Aluno nao encontrado'}), 404
 
 @alunos_blueprint.route('/alunos', methods=['POST'])
 def create_aluno():
@@ -33,7 +36,7 @@ def update_aluno(aluno_id):
         atualizar_aluno(aluno_id, data)
         return jsonify({'message': 'Aluno atualizado com sucesso!'}), 200
     except AlunoNaoEncontrado:
-        return jsonify({'error': 'Aluno não encontrado'}), 404
+        return jsonify({'error': 'Aluno nao encontrado'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
@@ -41,8 +44,8 @@ def update_aluno(aluno_id):
 def delete_aluno(aluno_id):
     try:
         excluir_aluno(aluno_id)
-        return jsonify({'message': 'Aluno excluído com sucesso!'}), 200
+        return jsonify({'message': 'Aluno excluido com sucesso!'}), 200
     except AlunoNaoEncontrado:
-        return jsonify({'error': 'Aluno não encontrado'}), 404
+        return jsonify({'error': 'Aluno nao encontrado'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 400

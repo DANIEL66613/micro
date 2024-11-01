@@ -39,7 +39,7 @@ class AlunoNaoEncontrado(Exception):
 def aluno_por_id(id_aluno):
     aluno = Aluno.query.get(id_aluno)
     if aluno is None:
-        raise AlunoNaoEncontrado(f'Aluno com ID {id_aluno} não encontrado.')
+        raise AlunoNaoEncontrado(f'Aluno com ID {id_aluno} nao encontrado.')
     return aluno.to_dict()
 
 def listar_alunos():
